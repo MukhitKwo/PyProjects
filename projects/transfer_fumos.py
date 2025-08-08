@@ -4,9 +4,13 @@ from email.message import EmailMessage
 import ssl
 from pathlib import Path
 import mimetypes
+import json
+
+with open("keys.json", "r") as f:
+    keys = json.load(f)
 
 sender_email = "mukhitkwo@gmail.com"
-app_password = "htavzayrveyjhawi"
+app_password = keys["email"]["app_password"]
 receiver_email = "antoniotolstykh@gmail.com"
 
 subject = "Fumos"
