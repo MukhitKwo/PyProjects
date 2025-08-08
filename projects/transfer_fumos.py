@@ -4,14 +4,17 @@ from email.message import EmailMessage
 import ssl
 from pathlib import Path
 import mimetypes
-import json
+from dotenv import load_dotenv
+import os
 
-with open("keys.json", "r") as f:
-    keys = json.load(f)
+load_dotenv(dotenv_path="config/.env")
 
 sender_email = "mukhitkwo@gmail.com"
-app_password = keys["email"]["app_password"]
+app_password = os.getenv("MUK_MAIL_APP_PASSWORD")
 receiver_email = "antoniotolstykh@gmail.com"
+
+if app_password is None:
+    raise ValueError("MUK_MAIL_APP_PASSWORD environment variable is not set.")
 
 subject = "Fumos"
 body = ""

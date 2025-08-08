@@ -1,15 +1,16 @@
 import smtplib
 from email.message import EmailMessage
 import ssl
-import json
+from dotenv import load_dotenv
+import os
 
-with open("keys.json", "r") as f:
-    keys = json.load(f)
-
-
+load_dotenv(dotenv_path="config/.env")
 
 sender_email = "mukhitkwo@gmail.com"
-app_password = keys["email"]["app_password"]
+app_password = os.getenv("MUK_MAIL_APP_PASSWORD")
+
+if app_password is None:
+    raise ValueError("MUK_MAIL_APP_PASSWORD environment variable is not set.")
 
 receiver_email = "antoniotolstykh@gmail.com"
 
@@ -23,7 +24,7 @@ msg["Subject"] = subject
 msg.set_content(body)
 
 context = ssl.create_default_context()
-with smtplib.SMTP_SSL("smtp.gmail.com",465,context=context) as smtp:
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as smtp:
     smtp.login(sender_email, app_password)
     smtp.send_message(msg)
 
