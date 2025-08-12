@@ -13,11 +13,11 @@ class Planet:
         self.vel = vel
 
         self.color = color
-        self.radius = radius if radius is not None else math.log(mass, 10)*10
+        self.radius = radius if radius is not None else math.log(mass, 10)*5 * 0.35
 
         self.dt = 1/60
 
-    def calc_orbit(self, body):
+    def calc_vel(self, body):
 
         # get x and y values from ball to center
         r_vec = self.pos - body.pos
@@ -29,10 +29,22 @@ class Planet:
         direction = r_vec.normalize()
 
         # get acceleration for x and y
-        a = -self.sim.G * body.mass / distance**2 * direction
+        a = -self.sim.settings.G * body.mass / distance**2 * direction
 
         self.vel += a * self.dt
+
+    def calc_pos(self):
         self.pos += self.vel * self.dt
 
     def draw(self):
-        pygame.draw.circle(self.sim.screen, self.color, (int(self.pos[0]), int(self.pos[1])), self.radius)
+        cx = self.sim.settings.camera_pos.x
+        cy = self.sim.settings.camera_pos.y
+        cz = self.sim.settings.camera_zoom
+
+        x = (int(self.pos[0]) * 0.35 * cz) + cx
+        y = (int(self.pos[1]) * 0.35 * cz) + cy
+
+        pygame.draw.circle(self.sim.screen, self.color, (x, y), self.radius * cz)
+
+    def __repr__(self):
+        return f"Planet(mass={self.mass}, pos={tuple(round(p, 1) for p in self.pos)})"
