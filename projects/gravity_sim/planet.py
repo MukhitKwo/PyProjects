@@ -4,7 +4,7 @@ from pygame import Vector2
 
 
 class Planet:
-    def __init__(self, sim, pos, mass, vel, color, radius=None):
+    def __init__(self, sim, pos, vel, mass,  radius, color):
 
         self.sim = sim
 
@@ -13,7 +13,7 @@ class Planet:
         self.vel = vel
 
         self.color = color
-        self.radius = radius if radius is not None else math.log(mass, 10)*5 * 0.35
+        self.radius = radius if radius is not None else math.log(mass, 10) * 5
 
         self.dt = 1/60
 
@@ -37,12 +37,12 @@ class Planet:
         self.pos += self.vel * self.dt
 
     def draw(self):
-        cx = self.sim.settings.camera_pos.x
-        cy = self.sim.settings.camera_pos.y
-        cz = self.sim.settings.camera_zoom
+        cx = self.sim.camera.camera_pos.x
+        cy = self.sim.camera.camera_pos.y
+        cz = self.sim.camera.camera_zoom
 
-        x = (int(self.pos[0]) * 0.35 * cz) + cx
-        y = (int(self.pos[1]) * 0.35 * cz) + cy
+        x = (int(self.pos[0]) * cz + cx)
+        y = (int(self.pos[1]) * cz + cy)
 
         pygame.draw.circle(self.sim.screen, self.color, (x, y), self.radius * cz)
 
