@@ -19,6 +19,7 @@ res = cur.execute("SELECT name FROM sqlite_master")  #! get table names from sql
 res = cur.execute("SELECT score FROM movie")
 print(res.fetchall())
 
+# Yes, the (?, ?, ?) correspond to title (name), year (date), and score (rating) in the movie table.
 data = [
     ("Monty Python Live at the Hollywood Bowl", 1982, 7.9),
     ("Monty Python's The Meaning of Life", 1983, 7.5),
